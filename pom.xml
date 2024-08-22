@@ -57,10 +57,10 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Flyway para migração de banco de dados -->
+		<!-- Flyway para migração de mysql -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
+			<artifactId>flyway-mysql</artifactId>
 		</dependency>
 
 
