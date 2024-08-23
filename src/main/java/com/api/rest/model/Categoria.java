@@ -1,6 +1,7 @@
 package com.api.rest.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // vai ser criado apartir da tabela, não vai ser o jpa/hibernate que irá criar.
     private Long codigo;
 
+    @NotNull
     private String nome;
 
 
