@@ -2,6 +2,7 @@ package com.api.rest.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ public class Categoria {
     private Long codigo;
 
     @NotNull
+    @Size(min=3, max = 10)
     private String nome;
 
 
