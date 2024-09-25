@@ -32,8 +32,8 @@ public class systemExceptionHandler extends ResponseEntityExceptionHandler {
 
         String mensagemUsuario = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
         String mensagemDesenvolvedor = ex.getCause().toString();
-        List<Erro> listaDeErros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
-        return handleExceptionInternal(ex ,new Erro(mensagemUsuario,mensagemDesenvolvedor), headers, HttpStatus.BAD_REQUEST, request);
+        List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+        return handleExceptionInternal(ex ,erros, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @Override  //atributo null
@@ -56,7 +56,7 @@ public class systemExceptionHandler extends ResponseEntityExceptionHandler {
         return erros;
     }
 
-    public class Erro {
+    public static class Erro {
 
         public String mensagemUsuario;
         public String mensagemDesenvolvedor;
