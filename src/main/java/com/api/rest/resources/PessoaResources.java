@@ -32,11 +32,7 @@ public class PessoaResources {
     public ResponseEntity<Pessoa> obterPessoaId(@PathVariable Long id) {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 
-        if (!pessoa.isEmpty()) {
-            return  ResponseEntity.ok(pessoa.get());
-        }  else {
-            return ResponseEntity.notFound().build();
-        }
+        return pessoa.isPresent() ? ResponseEntity.ok(pessoa.get()) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
@@ -44,7 +40,7 @@ public class PessoaResources {
         Pessoa pessoaSalva = pessoaRepository.save(pessoa);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}").buildAndExpand(pessoaSalva.getId()).toUri();
-//        response.setHeader("Location", uri.toASCIIString()); setar location no header de forma manual porém o created já retorna
+        response.setHeader("Location", uri.toASCIIString());
         return ResponseEntity.created(uri).body(pessoaSalva);
     }
 
