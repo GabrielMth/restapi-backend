@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,16 @@ public class PessoaResources {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
     }
+
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long codigo) {
+        if (!pessoaRepository.existsById(codigo)) {
+            throw new EmptyResultDataAccessException(1); // Lança exceção sem mensagem
+        }
+        pessoaRepository.deleteById(codigo);
+    }
+
 
 
 
