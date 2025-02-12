@@ -4,16 +4,20 @@ package com.api.rest.resources;
 import com.api.rest.event.RecursoCriadoEvent;
 import com.api.rest.model.Pessoa;
 import com.api.rest.repository.PessoaRepository;
+import com.api.rest.service.PessoaService;
 import jakarta.servlet.Servlet;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -30,6 +34,9 @@ public class PessoaResources {
 
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    @Autowired
+    private PessoaService pessoaService;
 
     @GetMapping
     public List<Pessoa> listar() {
@@ -62,6 +69,15 @@ public class PessoaResources {
         }
         pessoaRepository.deleteById(codigo);
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Pessoa> atualizar(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa) {
+        Pessoa pessoaSalva = pessoaService.atualizar(id,pessoa);
+        return ResponseEntity.ok(pessoaSalva);
+    }
+
+
 
 
 

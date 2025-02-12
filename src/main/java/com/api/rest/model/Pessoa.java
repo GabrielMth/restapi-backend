@@ -19,10 +19,11 @@ public class Pessoa {
     @Size(min=3, max = 15)
     private String nome;
 
-    @NotNull
-    private boolean ativo;
     @Embedded
     private Endereco endereco;
+
+    @NotNull
+    private boolean ativo;
 
     public Pessoa () {
 
