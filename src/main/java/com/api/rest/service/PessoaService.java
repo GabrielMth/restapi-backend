@@ -18,6 +18,19 @@ public class PessoaService {
                 .orElseThrow(() -> new EmptyResultDataAccessException(1));
 
         BeanUtils.copyProperties(pessoa, pessoaSalva, "id"); // Mantém o ID original
-        return pessoaRepository.save(pessoaSalva); // Salva a pessoa atualizada
+        return pessoaRepository.save(pessoaSalva);
     }
+
+    public void atualizarPropriedadeAtivo(Long id, Boolean ativo) {
+        Pessoa pessoaSalva = buscarPessoaId(id);
+        pessoaSalva.setAtivo(ativo);
+        pessoaRepository.save(pessoaSalva);
+    }
+
+    private Pessoa buscarPessoaId(Long id) {
+        Pessoa pessoaSalva = pessoaRepository.findById(id)
+                .orElseThrow(() -> new EmptyResultDataAccessException(1));
+    return pessoaSalva;
+    }
+
 }

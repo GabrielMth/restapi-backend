@@ -61,13 +61,13 @@ public class PessoaResources {
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
     }
 
-    @DeleteMapping("/{codigo}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long codigo) {
-        if (!pessoaRepository.existsById(codigo)) {
+    public void remover(@PathVariable Long id) {
+        if (!pessoaRepository.existsById(id)) {
             throw new EmptyResultDataAccessException(1); // Lança exceção sem mensagem
         }
-        pessoaRepository.deleteById(codigo);
+        pessoaRepository.deleteById(id);
     }
 
 
@@ -75,6 +75,12 @@ public class PessoaResources {
     public ResponseEntity<Pessoa> atualizar(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa) {
         Pessoa pessoaSalva = pessoaService.atualizar(id,pessoa);
         return ResponseEntity.ok(pessoaSalva);
+    }
+
+    @PutMapping("/{id}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
+        pessoaService.atualizarPropriedadeAtivo(id,ativo);
     }
 
 
