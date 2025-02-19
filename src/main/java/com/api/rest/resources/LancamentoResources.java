@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,15 @@ public class LancamentoResources {
         String mensagemDesenvolvedor = ex.toString();
         List<systemExceptionHandler.Erro> erros = Arrays.asList(new systemExceptionHandler.Erro(mensagemUsuario, mensagemDesenvolvedor));
         return ResponseEntity.badRequest().body(erros);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long id) {
+        if (!lancamentoRepository.existsById(id)) {
+            throw new EmptyResultDataAccessException(1); // Lança exceção sem mensagem
+        }
+        lancamentoRepository.deleteById(id);
     }
 
 }
