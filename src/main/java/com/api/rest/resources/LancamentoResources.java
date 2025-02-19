@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +49,11 @@ public class LancamentoResources {
     }
 
     @GetMapping
-    public List<Lancamento> pesquisar(LancamentoFilter filter) {
-        return lancamentoRepository.findAll();
+    public List<Lancamento> filtrar(@RequestParam(required = false) String descricao,
+                                    @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataVencimentoDe,
+                                    @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataVencimentoAte) {
+        return lancamentoRepository.filtrar(descricao, dataVencimentoDe, dataVencimentoAte);
     }
-
 
     @GetMapping("/{codigo}")
     public ResponseEntity<Lancamento> obterPorCodigo (@PathVariable Long codigo) {
