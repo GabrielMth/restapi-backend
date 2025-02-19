@@ -1,6 +1,7 @@
 package com.api.rest.resources;
 
 
+import com.api.rest.dto.PaginacaoDTO;
 import com.api.rest.event.RecursoCriadoEvent;
 import com.api.rest.exceptionhandler.systemExceptionHandler;
 import com.api.rest.model.Lancamento;
@@ -14,15 +15,15 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -50,10 +51,14 @@ public class LancamentoResources {
     }
 
     @GetMapping
-    public List<Lancamento> filtrar(@RequestParam(required = false) String descricao,
-                                    @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataVencimentoDe,
-                                    @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataVencimentoAte) {
-        return lancamentoRepository.filtrar(descricao, dataVencimentoDe, dataVencimentoAte);
+    public PaginacaoDTO<Lancamento> filtrar(@RequestParam(required = false) String descricao,
+                                            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataVencimentoDe,
+                                            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataVencimentoAte,
+                                            Pageable pageable) {
+
+        Page<Lancamento> paginaLancamentos = lancamentoRepository.filtrar(pageable, descricao, dataVencimentoDe, dataVencimentoAte);
+
+        return new PaginacaoDTO<>(paginaLancamentos);
     }
 
     @GetMapping("/{codigo}")
