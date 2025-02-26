@@ -1,7 +1,7 @@
 package com.api.rest.model;
 
 
-import com.api.rest.dto.LoginRequest;
+import com.api.rest.dto.LoginRequestDTO;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -26,7 +26,7 @@ public class Usuario {
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
-            name = "tb_users_roles",
+            name = "usuarios_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -64,7 +64,7 @@ public class Usuario {
         this.username = username;
     }
 
-    public boolean isLoginCorret (LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
+    public boolean isLoginCorret (LoginRequestDTO loginRequest, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(loginRequest.password(), this.password);
     }
 }
