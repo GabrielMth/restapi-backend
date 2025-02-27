@@ -5,21 +5,21 @@ import com.api.rest.model.Role;
 import com.api.rest.model.Usuario;
 import com.api.rest.repository.RoleRepository;
 import com.api.rest.repository.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/registro")
+@RequestMapping("/usuario")
 public class UserResources {
 
     @Autowired
@@ -36,7 +36,7 @@ public class UserResources {
     }
 
     @Transactional
-    @PostMapping
+    @PostMapping("/registrar")
     public ResponseEntity<Void> registrarUser (@RequestBody CreateUserDTO dto) {
 
         var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
@@ -54,5 +54,14 @@ public class UserResources {
         userRepository.save(user);
 
         return ResponseEntity.ok().build();
+    }
+
+
+    @GetMapping("/list")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    public ResponseEntity<List<Usuario>> listarUsuarios () {
+        var listUsuarios = userRepository.findAll();
+
+        return ResponseEntity.ok(listUsuarios);
     }
 }
