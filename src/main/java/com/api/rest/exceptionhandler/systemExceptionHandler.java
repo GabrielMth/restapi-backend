@@ -45,7 +45,7 @@ public class systemExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ EmptyResultDataAccessException.class })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
-        // Mensagem configurada no arquivo de propriedades
+
         String mensagemUsuario = messageSource.getMessage("not.found", null, LocaleContextHolder.getLocale());
         String mensagemDesenvolvedor = (ex.getCause() != null) ? ex.getCause().toString() : ex.toString();
 
