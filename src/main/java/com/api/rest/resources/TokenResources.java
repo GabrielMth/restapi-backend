@@ -67,4 +67,10 @@ public class TokenResources {
 
         return ResponseEntity.ok(new LoginResponseDTO(jwtValue, expireIn));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        // O cliente é responsável por remover o token localmente No caso será Angular.
+        return ResponseEntity.ok("Logout realizado com sucesso");
+    }
 }
