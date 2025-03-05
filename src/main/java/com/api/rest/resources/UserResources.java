@@ -5,7 +5,6 @@ import com.api.rest.model.Role;
 import com.api.rest.model.Usuario;
 import com.api.rest.repository.RoleRepository;
 import com.api.rest.repository.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
