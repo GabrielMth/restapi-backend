@@ -55,13 +55,19 @@ public class LoginService {
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(EXPIRE_IN))
                 .claim("scope", scopes)
+                .claim("name", user.getUsername()) // Adiciona o nome
+                .claim("roles", user.getRoles().stream().map(Role::getName).toList()) // Adiciona lista de roles
                 .build();
 
         var token = jwtEncoder
                 .encode(JwtEncoderParameters.from(claims))
                 .getTokenValue();
 
-        return new LoginResponseDTO(token, EXPIRE_IN);
+        return new LoginResponseDTO(
+                token,
+                EXPIRE_IN,
+                "Bearer",
+                user.getUsername());
     }
 
 

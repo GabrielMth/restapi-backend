@@ -1,6 +1,7 @@
 package com.api.rest.resources;
 
 
+import com.api.rest.dto.PaginacaoDTO;
 import com.api.rest.event.RecursoCriadoEvent;
 import com.api.rest.model.Pessoa;
 import com.api.rest.repository.PessoaRepository;
@@ -14,6 +15,8 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +51,13 @@ public class PessoaResources {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 
         return pessoa.isPresent() ? ResponseEntity.ok(pessoa.get()) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping(params = "nome")
+    public PaginacaoDTO<Pessoa> filtrarPessoasNome(@RequestParam("nome") String nome, Pageable pageable) {
+        Page<Pessoa> pessoas = pessoaRepository.filtrarPorNome(nome, pageable);
+
+        return new PaginacaoDTO<>(pessoas);
     }
 
     @PostMapping
