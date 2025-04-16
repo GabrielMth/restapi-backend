@@ -60,7 +60,7 @@ public class LancamentoResources {
         return new PaginacaoDTO<>(paginaLancamentos);
     }
 
-    @GetMapping("/resumo")
+    @GetMapping(params = "resumo")
     public PaginacaoDTO<LancamentoResumoDTO> resumo(
             @RequestParam(required = false) String descricao,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataVencimentoDe,
