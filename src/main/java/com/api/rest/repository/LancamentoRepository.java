@@ -1,6 +1,7 @@
 package com.api.rest.repository;
 
 
+import com.api.rest.dto.LancamentoResumoDTO;
 import com.api.rest.model.Lancamento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,4 +25,32 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
                              @Param("descricao") String descricao,
                              @Param("dataVencimentoDe") LocalDate dataVencimentoDe,
                              @Param("dataVencimentoAte") LocalDate dataVencimentoAte);
+
+
+    @Query("""
+            SELECT new com.api.rest.dto.LancamentoResumoDTO(
+            l.codigo,
+            l.descricao,
+            l.dataVencimento,
+            l.dataPagamento,
+            l.valor,
+            l.pessoa.nome,
+            l.tipo,
+            l.categoria.nome
+            )
+                FROM Lancamento l
+                WHERE (:descricao IS NULL OR LOWER(l.descricao) LIKE LOWER(CONCAT('%', :descricao, '%')))
+                AND (:dataDe IS NULL OR l.dataVencimento >= :dataDe)
+                AND (:dataAte IS NULL OR l.dataVencimento <= :dataAte)
+    """)
+    Page<LancamentoResumoDTO> resumir(
+            @Param("descricao") String descricao,
+            @Param("dataDe") LocalDate dataVencimentoDe,
+            @Param("dataAte") LocalDate dataVencimentoAte,
+            Pageable pageable
+    );
+
+
+
+
 }

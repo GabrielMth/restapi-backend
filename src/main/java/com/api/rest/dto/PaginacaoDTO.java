@@ -69,7 +69,7 @@ public class PaginacaoDTO<T> {
         return size;
     }
 
-    public int getTotalnapagina() {
+    public int getElementosNaPagina() {
         return elementosNaPagina;
     }
 }
