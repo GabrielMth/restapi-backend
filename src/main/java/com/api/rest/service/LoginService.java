@@ -29,7 +29,7 @@ public class LoginService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    private static final long EXPIRE_IN = 300L;
+    private static final long EXPIRE_IN = 3000L;
 
 
     public LoginResponseDTO login(LoginRequestDTO loginRequest) {

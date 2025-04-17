@@ -1,5 +1,6 @@
 package com.api.rest.exceptionhandler;
 
+import com.api.rest.service.exceptionDeRegraDeNegocio.LancamentoInexistente;
 import com.api.rest.service.exceptionDeRegraDeNegocio.PessoaInexistenteOuInativaException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,16 @@ public class SystemExceptionHandler extends ResponseEntityExceptionHandler {
         List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
         return ResponseEntity.badRequest().body(erros);
     }
+
+    @ExceptionHandler(LancamentoInexistente.class)
+    public ResponseEntity<Object> handleLancamentoInexistente(LancamentoInexistente ex) {
+        String mensagemUsuario = messageSource.getMessage("lancamento.inexistente", null, LocaleContextHolder.getLocale());
+        String mensagemDesenvolvedor = ex.toString();
+        List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+        return ResponseEntity.badRequest().body(erros);
+    }
+
+
 
 
     @Override  //atributo null
