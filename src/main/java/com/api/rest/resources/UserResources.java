@@ -1,4 +1,4 @@
-package com.api.rest.controllers;
+package com.api.rest.resources;
 
 import com.api.rest.dto.CreateUserDTO;
 import com.api.rest.model.Role;
@@ -38,7 +38,7 @@ public class UserResources {
     @PostMapping("/registrar")
     public ResponseEntity<Void> registrarUser (@RequestBody CreateUserDTO dto) {
 
-        var basicRole = roleRepository.findByName(Role.Values.MEMBRO.name());
+        var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
 
         var userFromDb = userRepository.findByUsername(dto.username());
         if  (userFromDb.isPresent()) {
