@@ -1,7 +1,6 @@
 package com.api.rest.repository;
 
-import com.api.rest.dto.PaginacaoDTO;
-import com.api.rest.model.Pessoa;
+import com.api.rest.model.Cliente;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,12 +11,12 @@ import java.util.Optional;
 
 
 @Repository
-public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query(
-            "SELECT p FROM Pessoa p " +
-            "WHERE LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%'))"
+            "SELECT c FROM Cliente c " +
+            "WHERE LOWER(c.nome) LIKE LOWER(CONCAT('%', :nome, '%'))"
     )
-    Page<Pessoa> filtrarPorNome(String nome,Pageable pageable);
+    Page<Cliente> filtrarPorNome(String nome, Pageable pageable);
 
 }

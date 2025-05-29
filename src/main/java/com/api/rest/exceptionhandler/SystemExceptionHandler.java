@@ -1,6 +1,5 @@
 package com.api.rest.exceptionhandler;
 
-import com.api.rest.service.exceptionDeRegraDeNegocio.LancamentoInexistente;
 import com.api.rest.service.exceptionDeRegraDeNegocio.PessoaInexistenteOuInativaException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +12,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -41,6 +43,22 @@ public class SystemExceptionHandler extends ResponseEntityExceptionHandler {
         String mensagemDesenvolvedor = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
         List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
         return handleExceptionInternal(ex ,erros, headers, HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({ AccessDeniedException.class})
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        String mensagemUsuario = messageSource.getMessage("sem.permissao", null, LocaleContextHolder.getLocale());
+        String mensagemDesenvolvedor = ex.toString();
+        List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+        return new ResponseEntity<>(erros, new HttpHeaders(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({ AuthenticationException.class, HttpClientErrorException.Unauthorized.class })
+    public ResponseEntity<Object> handleUnauthorized(Exception ex, WebRequest request) {
+        String mensagemUsuario = messageSource.getMessage("credenciais.incorretas", null, LocaleContextHolder.getLocale());
+        String mensagemDesenvolvedor = ex.toString();
+        List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+        return new ResponseEntity<>(erros, new HttpHeaders(), HttpStatus.UNAUTHORIZED); // 401 Unauthorized
     }
 
     @ExceptionHandler({ EmptyResultDataAccessException.class })
@@ -71,16 +89,6 @@ public class SystemExceptionHandler extends ResponseEntityExceptionHandler {
         List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
         return ResponseEntity.badRequest().body(erros);
     }
-
-    @ExceptionHandler(LancamentoInexistente.class)
-    public ResponseEntity<Object> handleLancamentoInexistente(LancamentoInexistente ex) {
-        String mensagemUsuario = messageSource.getMessage("lancamento.inexistente", null, LocaleContextHolder.getLocale());
-        String mensagemDesenvolvedor = ex.toString();
-        List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
-        return ResponseEntity.badRequest().body(erros);
-    }
-
-
 
 
     @Override  //atributo null

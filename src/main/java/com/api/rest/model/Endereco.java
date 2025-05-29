@@ -1,16 +1,22 @@
 package com.api.rest.model;
 
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
 
 @Embeddable
 public class Endereco {
 
-    private String logradouro;
+    @NotNull
+    private String rua;
+    @NotNull
     private String numero;
-    private String complemento;
+    @NotNull
     private String bairro;
+    @NotNull
     private String cep;
+    @NotNull
     private String cidade;
+    @NotNull
     private String estado;
 
     // Construtor padrão
@@ -18,10 +24,9 @@ public class Endereco {
     }
 
     // Construtor com parâmetros
-    public Endereco(String logradouro, String numero, String complemento, String bairro, String cep, String cidade, String estado) {
-        this.logradouro = logradouro;
+    public Endereco(String rua, String numero, String bairro, String cep, String cidade, String estado) {
+        this.rua = rua;
         this.numero = numero;
-        this.complemento = complemento;
         this.bairro = bairro;
         this.cep = cep;
         this.cidade = cidade;
@@ -29,12 +34,12 @@ public class Endereco {
     }
 
     // Getters e Setters
-    public String getLogradouro() {
-        return logradouro;
+    public String getRua() {
+        return rua;
     }
 
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
+    public void setRua(String rua) {
+        this.rua = rua;
     }
 
     public String getNumero() {
@@ -43,14 +48,6 @@ public class Endereco {
 
     public void setNumero(String numero) {
         this.numero = numero;
-    }
-
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
     }
 
     public String getBairro() {
